@@ -58,6 +58,12 @@ This project uses a basic Git workflow:
 - kubectl
 - helm
 
+### Deployment via script
+
+```
+./scripts/deploy.sh
+```
+
 ### Deployment via GitHub Actions
 
 1. Trigger the `deploy.yml` GitHub Action
@@ -111,7 +117,7 @@ Trigger the `teardown.yml` GitHub Action to destroy all cloud infrastructure (`t
 
 ## 📁 Project Structure
 
-<pre> ``` 
+<pre> 
 ├───.github
 │   └───workflows
 │
@@ -136,7 +142,7 @@ Trigger the `teardown.yml` GitHub Action to destroy all cloud infrastructure (`t
 │   └───vnet
 ├───scripts
 └───site
-``` </pre>
+</pre>
 ---
 
 ## 👤 Author
