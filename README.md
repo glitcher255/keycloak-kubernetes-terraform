@@ -111,7 +111,7 @@ Trigger the `teardown.yml` GitHub Action to destroy all cloud infrastructure (`t
 
 ## 📁 Project Structure
 
-E:.
+<pre> ``` 
 ├───.github
 │   └───workflows
 │
@@ -136,10 +136,9 @@ E:.
 │   └───vnet
 ├───scripts
 └───site
-
+``` </pre>
 ---
 
 ## 👤 Author
 
-Your Name  
 [Glitcher255](https://github.com/glitcher255)
