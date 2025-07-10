@@ -1,3 +1,14 @@
+- name: Wait for Keycloak service to be ready
+  uri:
+    url: "http://{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
+    method: POST
+    return_content: no
+    status_code: 400  # means service is up
+  register: result
+  until: result.status == 400 or result.status == 401  # Accepts auth failure as "ready"
+  retries: 20
+  delay: 3
+
 - name: Get admin token
   uri:
     url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
