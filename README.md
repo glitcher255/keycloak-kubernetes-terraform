@@ -109,6 +109,17 @@ password: adminpass
 
 ---
 
+## 🔄 Deployment Documentation
+
+1. Wait for LoadBalancer IPs:
+2. Use Ansible until loop to poll for IP readiness
+3. Inject IP into static site:
+4. Jinja2 template renders static HTML with Keycloak public IP
+5. Configure Keycloak:
+6. Once static site IP is ready, it is used as the redirect_uri via Keycloak REST API
+
+---
+
 ## 📌 Design Decisions
 
 | Decision              | Rationale |
