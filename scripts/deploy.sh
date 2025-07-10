@@ -4,12 +4,14 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "[+] Installing Ansible collections..."
-ansible-galaxy collection install -r ansible/requirements.txt
+ansible-galaxy collection install -r requirements.txt
 
-echo "[+] Running Ansible playbook..."
-ansible-playbook -i ansible/inventory/kube_inventory.yaml ansible/playbook.yaml
+echo "[+] Installing Ansible Galaxy collections..."
+ansible-galaxy collection install -r ansible/requirements.yml
 
 terraform apply -auto-approve
 terraform output -raw kube_config > kubeconfig/kubeconfig.yaml
+
 cd ansible
+
 ansible-playbook -i inventory/kube_inventory.yaml playbook.yaml
