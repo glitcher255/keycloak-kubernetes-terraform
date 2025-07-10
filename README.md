@@ -79,6 +79,16 @@ Trigger the `configure.yml` workflow to reapply Ansible roles (e.g., config chan
 
 Trigger the `teardown.yml` GitHub Action to destroy all cloud infrastructure (`terraform destroy`)
 
+### Usage
+
+```
+Keycloak credentials live in ./ansible/roles/keycloak/tasks/main.yaml
+defaults
+username: admin
+password: adminpass
+```
+
+
 ---
 
 ## 🔐 Authentication Flow
