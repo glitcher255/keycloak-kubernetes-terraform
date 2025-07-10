@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Keycloak Auth Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/keycloak-js@latest/dist/keycloak.min.js"></script>
+  </head>
+  <body>
+    <div id="content" style="display:none;">
+      <h1>Authenticated by Keycloak</h1>
+      <h1>Admin IP : "{{ keycloak_url }}"</h1>
+    </div>
+
+    <script>
+      const keycloak = new Keycloak({
+        url: "{{ keycloak_url }}",
+        realm: 'master',
+        clientId: 'site'
+      });
+
+      keycloak.init({ onLoad: 'login-required' }).then(function(authenticated) {
+        if (authenticated) {
+          document.getElementById('content').style.display = 'block';
+        } else {
+          console.warn("Not authenticated");
+        }
+      }).catch(function() {
+        console.error("Authentication failed");
+      });
+    </script>
+  </body>
+</html>

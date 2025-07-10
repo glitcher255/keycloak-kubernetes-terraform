@@ -1,0 +1,77 @@
+- name: Deploy to AKS
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - vars/main.yaml
+  tasks:
+    - name: Include Postgres role
+      include_role:
+        name: postgres
+
+    - name: Include Keycloak role
+      include_role:
+        name: keycloak
+
+# Keycloak AKS info stored in svc_info var
+    - name: Get Keycloak service info
+      kubernetes.core.k8s_info:
+        kubeconfig: "{{ kubeconfig }}"
+        api_version: v1
+        kind: Service
+        namespace: keycloak
+        name: keycloak
+      register: svc_info
+# Wait for keycloak loadbalancer to provision
+    - name: Wait for Keycloak LoadBalancer to provision
+      kubernetes.core.k8s_info:
+        kubeconfig: "{{ kubeconfig }}"
+        api_version: v1
+        kind: Service
+        namespace: keycloak
+        name: keycloak
+      register: svc_info
+      retries: 10
+      delay: 3
+      until: svc_info.resources[0].status.loadBalancer.ingress is defined and
+            svc_info.resources[0].status.loadBalancer.ingress[0].ip is defined
+# Sets variable keycloak_url
+    - name: Set Keycloak URL var
+      set_fact:
+        keycloak_url: >-
+          http://{{ svc_info.resources[0].status.loadBalancer.ingress[0].ip }}:80
+
+    - name: Include Static Site role
+      include_role:
+        name: site
+
+# Grabs site AKS info and stores it in site_info
+    - name: Get site service info
+      kubernetes.core.k8s_info:
+        kubeconfig: "{{ kubeconfig }}"
+        api_version: v1
+        kind: Service
+        namespace: keycloak
+        name: site
+      register: site_info
+# Wait for site loadbalancer to provision
+    - name: Wait for site LoadBalancer to provision
+      kubernetes.core.k8s_info:
+        kubeconfig: "{{ kubeconfig }}"
+        api_version: v1
+        kind: Service
+        namespace: keycloak
+        name: site
+      register: site_info
+      retries: 10
+      delay: 3
+      until: site_info.resources[0].status.loadBalancer.ingress is defined and
+            site_info.resources[0].status.loadBalancer.ingress[0].ip is defined
+# Sets variable site_url
+    - name: Set site URL var
+      set_fact:
+        site_url: >-
+          http://{{ site_info.resources[0].status.loadBalancer.ingress[0].ip }}/
+
+    - name: Include keycloak_config role
+      include_role:
+        name: keycloak_config

@@ -1,0 +1,20 @@
+- name: Install Keycloak via Helm
+  community.kubernetes.helm:
+    name: keycloak
+    chart_ref: bitnami/keycloak
+    release_namespace: keycloak
+    create_namespace: true
+    kubeconfig: "{{ kubeconfig }}"
+    values:
+      service:
+        type: LoadBalancer
+      auth:
+        adminUser: admin
+        adminPassword: adminpass
+      postgresql:
+        enabled: false
+      externalDatabase:
+        host: postgres-postgresql.keycloak.svc.cluster.local
+        user: "{{ postgres_user }}"
+        password: "{{ postgres_pass }}"
+        database: "{{ postgres_db }}"

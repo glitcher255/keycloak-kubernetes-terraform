@@ -1,0 +1,50 @@
+- name: Get admin token
+  uri:
+    url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"
+    method: POST
+    body: "username=admin&password=adminpass&grant_type=password&client_id=admin-cli"
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+    return_content: yes
+  register: keycloak_token_response
+
+- set_fact:
+    keycloak_token: "{{ keycloak_token_response.json.access_token }}"
+
+# Get existing client by clientId
+- name: Query client by clientId
+  uri:
+    url: "{{ keycloak_url }}/admin/realms/master/clients?clientId=site"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ keycloak_token }}"
+    return_content: yes
+  register: existing_clients
+
+# Set client_id if found (Requires Keycloak internal ID)
+- set_fact:
+    keycloak_client_id: "{{ existing_clients.json[0].id }}"
+  when: existing_clients.json | length > 0
+
+# Create or update client
+- name: Create or update client
+  uri:
+    url: >-
+      {{ keycloak_url }}/admin/realms/master/clients{{
+        '' if existing_clients.json | length == 0
+        else '/' + existing_clients.json[0].id
+      }}
+    method: >-
+      {{ 'POST' if existing_clients.json | length == 0 else 'PUT' }}
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer {{ keycloak_token }}"
+    body_format: json
+    body:
+      clientId: "site"
+      enabled: true
+      protocol: "openid-connect"
+      publicClient: true
+      redirectUris:
+        - "{{ site_url }}"
+    status_code: "{{ 201 if existing_clients.json | length == 0 else 204 }}"

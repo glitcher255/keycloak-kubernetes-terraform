@@ -1,0 +1,64 @@
+- name: Create Static Site Deployment
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: site
+        namespace: keycloak
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: site
+        template:
+          metadata:
+            labels:
+              app: site
+          spec:
+            containers:
+            - name: nginx
+              image: nginx:alpine
+              volumeMounts:
+                - name: html
+                  mountPath: /usr/share/nginx/html
+              ports:
+              - containerPort: 80
+            volumes:
+              - name: html
+                configMap:
+                  name: static-site-html
+
+#Assign public IP
+- name: Expose Static Site
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: site
+        namespace: keycloak
+      spec:
+        selector:
+          app: site
+        ports:
+          - protocol: TCP
+            port: 80
+            targetPort: 80
+        type: LoadBalancer
+
+#What is then mounted into volume
+- name: Create ConfigMap for static HTML site
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig }}"
+    state: present
+    namespace: keycloak
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: static-site-html
+      data:
+        index.html: "{{ lookup('template', 'templates/index.html.j2') }}"

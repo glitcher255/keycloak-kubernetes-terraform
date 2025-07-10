@@ -1,0 +1,3 @@
+postgres_user: keycloak
+postgres_pass: keycloakpass
+postgres_db: keycloakdb

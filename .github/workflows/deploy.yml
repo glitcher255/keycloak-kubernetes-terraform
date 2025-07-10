@@ -1,0 +1,31 @@
+name: Deploy Infra
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    name: 'Deploy Infrastructure'
+    runs-on: ubuntu-latest
+    env:
+      #GitHub auth with Terraform cloud used in "provider.tf" # Address is app.terraform.io becomes app_terraform.io. (must be prefixed with "TF_TOKEN_")
+      ##########################################################################
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
+      ##########################################################################
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Make Script Executable
+        run: chmod +x scripts/deploy.sh
+
+      - name: Run Deploy Script
+        run: ./scripts/deploy.sh
