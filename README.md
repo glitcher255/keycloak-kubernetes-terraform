@@ -158,7 +158,6 @@ This ensures mutual routing is configured dynamically and correctly without hard
 ├───kubeconfig
 ├───modules
 │   ├───cluster
-│   ├───helm
 │   ├───NSG
 │   └───vnet
 ├───scripts

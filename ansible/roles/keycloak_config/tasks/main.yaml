@@ -1,3 +1,4 @@
+# Wait for AKS to fully provision keycloak...
 - name: Wait for Keycloak service to be ready
   uri:
     url: "{{ keycloak_url }}/realms/master/protocol/openid-connect/token"

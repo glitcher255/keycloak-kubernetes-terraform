@@ -49,7 +49,7 @@
             targetPort: 80
         type: LoadBalancer
 
-#What is then mounted into volume
+# Mounted to volume - injected via jinja2
 - name: Create ConfigMap for static HTML site
   kubernetes.core.k8s:
     kubeconfig: "{{ kubeconfig }}"
