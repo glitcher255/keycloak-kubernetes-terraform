@@ -124,15 +124,24 @@ This ensures mutual routing is configured dynamically and correctly without hard
 | **No Ingress used** | Simplicity – LoadBalancer services are used instead |
 | **GitHub Actions** | Native CI/CD for GitHub, no need for external runners |
 
+Why Keycloak over Azure AD?
+Keycloak is open-source, self-hosted, and OIDC-compliant. It offers full control over authentication flows and user federation. Azure AD is proprietary, and incur licensing, cost and vendor lock-in.
+
+Why use Helm instead of raw kubectl YAML?
+Helm charts provide reusable, parameterized templates with production-ready defaults. This reduces boilerplate and improves maintainability.
+
+Why Kubernetes on AKS?
+Kubernetes provides scalable, portable container orchestration. AKS offers managed Kubernetes with integrated monitoring, autoscaling, and Azure-native networking. Unlike Docker Compose or App Services, Kubernetes is closer to real-world production infrastructure, making it ideal for deploying highly scalable service workloads.
+
 ---
 
-## 🌱 Future Extensions
+## 🌱 Extensions / Possible Features
 
-- Add Ingress + TLS using cert-manager
+- Ingress + TLS: Enables domain-based routing and secure HTTPS connections, which are required in production environments.
+- Monitoring with Prometheus + Grafana: Provides visibility into cluster and app performance, critical for debugging and scaling.
+- OpenTelemetry Tracing: Enables distributed tracing for identifying latency bottlenecks across services.
+- Postgres Backup/Restore: Adds data safety and disaster recovery capability, essential for production databases.
 - Integrate external IdP (Google, GitHub) with Keycloak
-- Add monitoring via Prometheus + Grafana
-- OpenTelemetry tracing for Keycloak with Tempo or Jaegar
-- Backup/restore capabilities for Postgres
 
 ---
 
