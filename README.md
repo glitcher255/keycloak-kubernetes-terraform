@@ -124,7 +124,7 @@ This ensures mutual routing is configured dynamically and correctly without hard
 | **No Ingress used** | Simplicity – LoadBalancer services are used instead |
 | **GitHub Actions** | Native CI/CD for GitHub, no need for external runners |
 
-Why Keycloak over Azure AD?
+**Why Keycloak over Azure AD?**
 Keycloak is open-source, self-hosted, and OIDC-compliant. It offers full control over authentication flows and user federation. Azure AD is proprietary, and incur licensing, cost and vendor lock-in.
 
 Why use Helm instead of raw kubectl YAML?
