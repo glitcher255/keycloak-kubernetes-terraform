@@ -6,6 +6,11 @@ cd "$(dirname "$0")/.."
 echo "[+] Installing Ansible collections..."
 ansible-galaxy collection install -r ansible/requirements.yml
 
+- name: Install Python dependencies for Ansible K8s
+  run: |
+    python3 -m pip install --upgrade pip
+    pip install kubernetes openshift
+
 terraform apply -auto-approve
 terraform output -raw kube_config > kubeconfig/kubeconfig.yaml
 
