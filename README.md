@@ -42,9 +42,8 @@ This project uses a basic Git workflow:
 
 - All changes merged via Pull Requests
 - Branches used:
-  - `main` – stable deployment
-  - `feature/ansible-roles`, `infra/terraform` – implementation
-- Commits follow a meaningful format (`feat:`, `fix:`, `infra:`)
+  - `prod` – stable deployment
+  - `dev` – implementation
 
 ---
 
