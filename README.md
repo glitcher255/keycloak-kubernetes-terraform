@@ -6,6 +6,9 @@ The goal is to demonstrate Infrastructure-as-Code (IaC) principles using **Terra
 <p align="center">
   <img src="/screenshots/keycloak1.png" alt="keycloak"/>
 </p>
+<p align="center">
+  <img src="/screenshots/keycloak2.png" alt="keycloak"/>
+</p>
 
 ---
 
