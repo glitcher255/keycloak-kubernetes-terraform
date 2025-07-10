@@ -66,7 +66,7 @@ This project uses a basic Git workflow:
 
 ### CLI Deployment, Configuration, Teardown
 
-```
+```bash
 ./scripts/deploy.sh   # Deploy
 ./scripts/config.sh   # Configure
 ./scripts/teardown.sh # Teardown
