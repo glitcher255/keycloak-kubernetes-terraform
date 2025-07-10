@@ -1,4 +1,4 @@
-# AKS + Keycloak Authentication Demo
+# AKS + Keycloak Authentication
 
 This project sets up a production-style Kubernetes environment on Azure using AKS. It deploys a Keycloak identity provider with an attached Postgres database and a static website protected by Keycloak authentication.
 
@@ -6,9 +6,10 @@ The goal is to demonstrate Infrastructure-as-Code (IaC) principles using **Terra
 <p align="center">
   <img src="/screenshots/keycloak1.png" alt="keycloak"/>
 </p>
+
 ---
 
-## 🚀 Architecture Overview
+## 🎯 Architecture Overview
 
 
 Components:
