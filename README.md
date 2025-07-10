@@ -138,6 +138,18 @@ Kubernetes provides scalable, portable container orchestration. AKS offers manag
 
 ---
 
+## 🌐 Network Configuration
+
+- The Kubernetes cluster is provisioned inside an Azure Virtual Network (vNet) to allow fine-grained control over resource communication and IP allocation.
+- Each Kubernetes LoadBalancer service (Keycloak and static site) receives a public IP to allow external access, as both services must be accessible directly over the internet:
+- The static site must redirect users to Keycloak.
+- Keycloak must redirect users back to the static site using redirect_uri.
+- Internal IPs or private services were not suitable due to this public OAuth flow requirement.
+- Ingress and DNS-based routing were deliberately avoided at this stage to reduce complexity and reliance on domain ownership and TLS certificate management. This is noted as a future extension.
+- Network Security Groups (NSGs) are left open to ports [80, 20, 5005] for prototyping purposes but can be locked down in future by restricting Keycloak and Postgres access to the AKS subnet or using private endpoints.
+
+---
+
 ## 🌱 Extensions / Possible Features
 
 - Ingress + TLS: Enables domain-based routing and secure HTTPS connections, which are required in production environments.
