@@ -124,13 +124,16 @@ This ensures mutual routing is configured dynamically and correctly without hard
 | **No Ingress used** | Simplicity – LoadBalancer services are used instead |
 | **GitHub Actions** | Native CI/CD for GitHub, no need for external runners |
 
-**Why Keycloak over Azure AD?**
+## Why Keycloak over Azure AD?
+
 Keycloak is open-source, self-hosted, and OIDC-compliant. It offers full control over authentication flows and user federation. Azure AD is proprietary, and incur licensing, cost and vendor lock-in.
 
-Why use Helm instead of raw kubectl YAML?
+## Why use Helm instead of raw kubectl YAML?
+
 Helm charts provide reusable, parameterized templates with production-ready defaults. This reduces boilerplate and improves maintainability.
 
-Why Kubernetes on AKS?
+## Why Kubernetes on AKS?
+
 Kubernetes provides scalable, portable container orchestration. AKS offers managed Kubernetes with integrated monitoring, autoscaling, and Azure-native networking. Unlike Docker Compose or App Services, Kubernetes is closer to real-world production infrastructure, making it ideal for deploying highly scalable service workloads.
 
 ---
