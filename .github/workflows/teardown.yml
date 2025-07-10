@@ -1,4 +1,4 @@
-name: Deploy Infra
+name: Teardown Infra
 on:
   workflow_dispatch:
 jobs:
