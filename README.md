@@ -27,6 +27,10 @@ Components:
 
 ---
 
+![Architecture](screenshots/architecture.png)
+
+---
+
 ## 🧱 Infrastructure Breakdown
 
 | Component   | Provisioned With | Justification |
@@ -60,13 +64,15 @@ This project uses a basic Git workflow:
 - kubectl
 - helm
 
-### Deployment via script
+### CLI Deployment, Configuration, Teardown
 
 ```
-./scripts/deploy.sh
+./scripts/deploy.sh   # Deploy
+./scripts/config.sh   # Configure
+./scripts/teardown.sh # Teardown
 ```
 
-### Deployment via GitHub Actions
+### Deployment via GitHub actions
 
 1. Trigger the `deploy.yml` GitHub Action
 2. This will:
@@ -74,11 +80,11 @@ This project uses a basic Git workflow:
    - Output kubeconfig file
    - Run Ansible to deploy Keycloak, Postgres, and the static site
 
-### Configuration via GitHub Actions
+### Configuration via Github actions
 
 Trigger the `configure.yml` workflow to reapply Ansible roles (e.g., config changes)
 
-### Teardown
+### Teardown via Github actions
 
 Trigger the `teardown.yml` GitHub Action to destroy all cloud infrastructure (`terraform destroy`)
 
