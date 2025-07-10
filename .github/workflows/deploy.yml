@@ -29,4 +29,3 @@ jobs:
 
       - name: Run Deploy Script
         run: ./scripts/deploy.sh
-# Trigger workflow

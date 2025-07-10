@@ -6,4 +6,10 @@ cd "$(dirname "$0")/.."
 terraform apply -auto-approve
 terraform output -raw kube_config > kubeconfig/kubeconfig.yaml
 cd ansible
+echo "[+] Installing Ansible collections..."
+ansible-galaxy collection install -r ansible/requirements.txt
+
+echo "[+] Running Ansible playbook..."
+ansible-playbook -i ansible/inventory/kube_inventory.yaml ansible/playbook.yaml
+
 ansible-playbook -i inventory/kube_inventory.yaml playbook.yaml
