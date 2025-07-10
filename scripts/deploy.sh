@@ -4,7 +4,7 @@ set -e
 cd "$(dirname "$0")/.."
 
 echo "[+] Installing Ansible collections..."
-ansible-galaxy collection install -r requirements.txt
+ansible-galaxy collection install -r ansible/requirements.txt
 
 echo "[+] Installing Ansible Galaxy collections..."
 ansible-galaxy collection install -r ansible/requirements.yml
