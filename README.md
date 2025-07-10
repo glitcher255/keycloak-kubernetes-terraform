@@ -18,8 +18,8 @@ The goal is to demonstrate Infrastructure-as-Code (IaC) principles using **Terra
 Components:
 - **AKS**: Azure Kubernetes Service cluster for container orchestration
 - **Keycloak**: Open-source identity and access management
-- **Postgres**: Used as Keycloak's backend database
-- **Static site**: A basic website served with authentication
+- **Postgres**: Used as the backing database for Keycloak
+- **Static site**: A basic static website protected via Keycloak login
 - **GitHub Actions**: CI/CD for deploy, configure, and teardown
 - **Terraform**: Provisions AKS, networking, and related resources
 - **Ansible**: Deploys and configures all workloads inside AKS
@@ -58,7 +58,7 @@ This project uses a basic Git workflow:
 
 ### Prerequisites
 
-- GitHub repo with configured Terraform Env: TF_TOKEN_app_terraform_io
+- Terraform Cloud account with API token set as TF_TOKEN_app_terraform_io in GitHub Secrets
 - Terraform
 - Ansible
 - kubectl
@@ -68,7 +68,7 @@ This project uses a basic Git workflow:
 
 ```bash
 ./scripts/deploy.sh   # Deploy
-./scripts/config.sh   # Configure
+./scripts/config.sh   # Reapplies all Ansible roles and Terraform modules to reconfigure
 ./scripts/teardown.sh # Teardown
 ```
 
@@ -90,13 +90,7 @@ Trigger the `teardown.yml` GitHub Action to destroy all cloud infrastructure (`t
 
 ### Usage
 
-```
-Keycloak credentials live in ./ansible/roles/keycloak/tasks/main.yaml
-defaults
-username: admin
-password: adminpass
-```
-
+Keycloak credentials are defined in Ansible role variables. Change them in roles/keycloak/tasks/main.yaml before deploying.
 
 ---
 
@@ -109,14 +103,12 @@ password: adminpass
 
 ---
 
-## 🔄 Deployment Documentation
+## 🔄 Dynamic Configuration Flow (IP Discovery + Injection)
 
-1. Wait for LoadBalancer IPs:
-2. Use Ansible until loop to poll for IP readiness
-3. Inject IP into static site:
-4. Jinja2 template renders static HTML with Keycloak public IP
-5. Configure Keycloak:
-6. Once static site IP is ready, it is used as the redirect_uri via Keycloak REST API
+1. Ansible waits for both Keycloak and Static Site LoadBalancer IPs to become available
+2. The Keycloak IP is injected into the static site's HTML via Jinja2 template
+3. The Static Site IP is then used to configure Keycloak clients via REST API
+This ensures mutual routing is configured dynamically and correctly without hardcoded values
 
 ---
 
@@ -126,7 +118,7 @@ password: adminpass
 |-----------------------|-----------|
 | **Terraform for AKS** | Industry standard for reproducible IaC |
 | **Ansible for app config** | Better suited for K8s resource templating and Helm integration |
-| **Helm for Keycloak & Postgres** | Provides production-ready templates with sensible defaults |
+| **Helm for Keycloak & Postgres** | Enables fast deployment using stable, community-maintained charts |
 | **Keycloak + Postgres** | Open-source, flexible, and widely adopted |
 | **Static Site + Keycloak** | Demonstrates real-world OAuth flow |
 | **No Ingress used** | Simplicity – LoadBalancer services are used instead |
@@ -177,3 +169,9 @@ password: adminpass
 ## 👤 Author
 
 [Glitcher255](https://github.com/glitcher255)
+
+---
+
+## 📝 License
+
+This project is licensed under the [MIT License](./LICENSE).
