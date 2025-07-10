@@ -27,5 +27,5 @@ jobs:
       - name: Make Script Executable
         run: chmod +x scripts/config.sh
 
-      - name: Run Deploy Script
+      - name: Run Config Script
         run: ./scripts/config.sh
