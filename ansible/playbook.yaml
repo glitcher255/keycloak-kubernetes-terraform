@@ -3,7 +3,40 @@
   gather_facts: false
   vars_files:
     - vars/main.yaml
+  vars:
+    vault_uri: "https://glitcher-vault.vault.azure.net"
   tasks:
+    # --- Fetch secrets from Azure Key Vault ---
+    - name: Get Postgres user from Key Vault
+      azure.azcollection.azure_keyvaultsecret_info:
+        vault_uri: "{{ vault_uri }}"
+        name: postgres-user
+      register: postgres_user_secret
+
+    - name: Get Postgres pass from Key Vault
+      azure.azcollection.azure_keyvaultsecret_info:
+        vault_uri: "{{ vault_uri }}"
+        name: postgres-pass
+      register: postgres_pass_secret
+
+    - name: Get Postgres DB from Key Vault
+      azure.azcollection.azure_keyvaultsecret_info:
+        vault_uri: "{{ vault_uri }}"
+        name: postgres-db
+      register: postgres_db_secret
+
+    - name: Get Keycloak admin password from Key Vault
+      azure.azcollection.azure_keyvaultsecret_info:
+        vault_uri: "{{ vault_uri }}"
+        name: keycloak-admin-password
+      register: keycloak_admin_secret
+      
+    - set_fact:
+        postgres_user: "{{ postgres_user_secret.secrets[0].value }}"
+        postgres_pass: "{{ postgres_pass_secret.secrets[0].value }}"
+        postgres_db: "{{ postgres_db_secret.secrets[0].value }}"
+        keycloak_admin_password: "{{ keycloak_admin_secret.secrets[0].value }}"
+        
     - name: Include Postgres role
       include_role:
         name: postgres
@@ -12,7 +45,7 @@
       include_role:
         name: keycloak
 
-# Keycloak AKS info stored in svc_info var
+# --- Keycloak AKS info stored in svc_info var ---
     - name: Get Keycloak service info
       kubernetes.core.k8s_info:
         kubeconfig: "{{ kubeconfig }}"
