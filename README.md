@@ -184,8 +184,7 @@ Kubernetes provides scalable, portable container orchestration. AKS offers manag
 │   ├───cluster
 │   ├───NSG
 │   └───vnet
-├───scripts
-└───site
+└───scripts
 </pre>
 ---
 

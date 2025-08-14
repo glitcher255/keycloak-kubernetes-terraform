@@ -11,7 +11,7 @@
         type: LoadBalancer
       auth:
         adminUser: admin
-        adminPassword: adminpass
+        adminPassword: "{{ keycloak_admin_password }}"
       postgresql:
         enabled: false
       externalDatabase:
